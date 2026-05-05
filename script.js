@@ -136,13 +136,15 @@ document.addEventListener('keydown', function (e) {
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 //Target section
 const section1 = document.querySelector('#section--1');
+const section2 = document.querySelector('#section--2');
 
 btnScrollTo.addEventListener('click', function (e) {
   e.preventDefault();
   //With getBoundingClientRect() we get some coordinates of the target section
   const s1coords = section1.getBoundingClientRect();
   console.log(s1coords);
-
+  const s2coords = section2.getBoundingClientRect();
+  console.log(s2coords);
   //the method is viewport dependent
   // console.log(e.target.getBoundingClientRect());
   //Window coordinates
@@ -159,8 +161,8 @@ btnScrollTo.addEventListener('click', function (e) {
 
   //First way without smoothness
   // window.scrollTo(
-  //   s1coords.left + window.pageXOffset,
-  //   s1coords.top + window.pageYOffset,
+  //   s2coords.left + window.pageXOffset,
+  //   s2coords.top + window.pageYOffset,
   // );
 
   //Second way with smoothness
@@ -171,8 +173,20 @@ btnScrollTo.addEventListener('click', function (e) {
   // });
 
   //New easiest way!!!
-  section1.scrollIntoView({ behavior: 'smooth' });
+  section2.scrollIntoView({ behavior: 'smooth' });
 });
 //#endregion
 
-//TODO play with scroll to really understand what's going on , ask claude
+//Events
+const h1 = document.querySelector('h1');
+const alertH1 = function (e) {
+  alert('add event listener : Great you are reading the heading');
+  h1.removeEventListener('mouseenter', alertH1); //Removed the event listener
+};
+
+h1.addEventListener('mouseenter', alertH1);
+
+//On mouse enter shortcut but its old!! With event listener i can add multiple functions
+// h1.onmouseenter = function (e) {
+//   alert('add event listener : Great you are reading the heading');
+// };
