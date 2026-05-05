@@ -142,15 +142,24 @@ const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 
-tabsContainer.addEventListener('click', function () {});
-
-document.querySelector('.operations').addEventListener('click', function (e) {
+//Checking which is the target clicked , searching for closest .operations__tab
+tabsContainer.addEventListener('click', function (e) {
   e.preventDefault();
+  const clicked = e.target.closest('.operations__tab'); //Btn
+  //Guard clause : if we get null so no correct click , return the function
+  if (!clicked) return;
+  //Removing class before adding it
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'));
+  //Adding tab
+  clicked.classList.add('operations__tab--active');
 
-  if (e.target.classList.contains('.operations')) {
-    console.log('test');
-  }
+  //Activate content area using dataset ( we take it dinamically with template string ) and adding the class
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
 });
+
 //#region-----------------------------
 
 // //How to select create and delete elements with js
