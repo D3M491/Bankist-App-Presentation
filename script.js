@@ -160,6 +160,8 @@ tabsContainer.addEventListener('click', function (e) {
     .classList.add('operations__content--active');
 });
 
+//TODO ask claude why we use datasets in html
+
 //#region-----------------------------
 
 // //How to select create and delete elements with js
