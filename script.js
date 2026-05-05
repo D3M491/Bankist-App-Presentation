@@ -93,20 +93,66 @@ btnScrollTo.addEventListener('click', function (e) {
 // 1) Add event listener to common parent element
 // 2) Determine what element originated the event
 document.querySelector('.nav__links').addEventListener('click', function (e) {
-     e.preventDefault();
+  e.preventDefault();
 
   //What element originated the link?
   console.log(e.target);
-  //Matching strategy
+  //Matching strategy : checking if the target clicked has the class nav__link
   if (e.target.classList.contains('nav__link')) {
-    
-    //We select the href link for the target section
-    const id = this.getAttribute('href');
+    //We select the href link for the target section , this time te target is not this keyword
+    const id = e.target.getAttribute('href');
     //Attach a scroll smooth to all id
-    document.querySelector(id).scrollIntoView({ behavior: 'smooth' })
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
 });
 
 //#endregion
+
+//#region------------DOM Traversing
+const h1 = document.querySelector('h1');
+//Going downwards : childs-
+console.log(h1.querySelectorAll('.highlight'));
+console.log(h1.children);
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'black';
+
+//Going upwards : parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+//Closest receive a query string . Search for the closest element that as the specified class
+// h1.closest('.header').style.background = 'var(--gradient-secondary)';
+//Going sideways
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+console.log(h1.parentElement.children);
+
+//Spreading the html collection into an array , iteration and application of scale only to el that are not h1
+// [...h1.parentElement.children].forEach(el => {
+//   if (el !== h1) el.style.transform = 'scale(.5)';
+// });
+//#endregion--------------------------
+
+//#region-------------Tabbed Component
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', function () {});
+
+document.querySelector('.operations').addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (e.target.classList.contains('.operations')) {
+    console.log('test');
+  }
+});
+//#region-----------------------------
+
 // //How to select create and delete elements with js
 // console.log(document.documentElement);
 // console.log(document.head);
