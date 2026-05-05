@@ -7,7 +7,13 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+//Button that will trigger the scroll animation
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+//Target section
+const section1 = document.querySelector('#section--1');
+const section2 = document.querySelector('#section--2');
 
+//#region Modal window
 const openModal = function (e) {
   e.preventDefault();
   modal.classList.remove('hidden');
@@ -32,7 +38,75 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+//#endregion
 
+//#region Scroll animation
+btnScrollTo.addEventListener('click', function (e) {
+  e.preventDefault();
+  //With getBoundingClientRect() we get some coordinates of the target section
+  const s1coords = section1.getBoundingClientRect();
+
+  //the method is viewport dependent
+  // console.log(e.target.getBoundingClientRect());
+  //Window coordinates
+  // console.log('Window coordinates (X/Y)', window.pageXOffset, pageYOffset);
+  // console.log('Viewport coordinates xy', s1coords.left, s1coords.top);
+  // console.log(
+  //   'heigth/width ',
+  //   document.documentElement.clientHeight,
+  //   document.documentElement.clientWidth,
+  // );
+
+  //Scrolling
+  //First we use scrollTo then we pass left and top . Left and Top . We need to get the document left and top and not the viewport ones . Current position + current scroll
+
+  //First way without smoothness
+  // window.scrollTo(
+  //   s2coords.left + window.pageXOffset,
+  //   s2coords.top + window.pageYOffset,
+  // );
+
+  //Second way with smoothness
+  // window.scrollTo({
+  //   left: s1coords.left + window.pageXOffset,
+  //   top: s1coords.top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+
+  //New easiest way!!!
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+//#endregion
+
+//#region Page navigation
+// document.querySelectorAll('.nav__link').forEach(el => {
+//   el.addEventListener('click', function (e) {
+//     e.preventDefault();
+//     //We select the href link for the target section
+//     const id = this.getAttribute('href');
+//     //Attach a scroll smooth to all id
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+//With event delegation (bubbles up) .
+// 1) Add event listener to common parent element
+// 2) Determine what element originated the event
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+     e.preventDefault();
+
+  //What element originated the link?
+  console.log(e.target);
+  //Matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    
+    //We select the href link for the target section
+    const id = this.getAttribute('href');
+    //Attach a scroll smooth to all id
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' })
+});
+
+//#endregion
 // //How to select create and delete elements with js
 // console.log(document.documentElement);
 // console.log(document.head);
@@ -131,62 +205,63 @@ document.addEventListener('keydown', function (e) {
 
 // logo.className = 'Jonas'; //Don't use , it overwrite all existing class
 
-//#region Scroll animation
-//Button that will trigger the scroll animation
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-//Target section
-const section1 = document.querySelector('#section--1');
-const section2 = document.querySelector('#section--2');
+//#region Events
+// const h1 = document.querySelector('h1');
+// const alertH1 = function (e) {
+//   alert('add event listener : Great you are reading the heading');
+//   // h1.removeEventListener('mouseenter', alertH1); //Removed the event listener
+// };
 
-btnScrollTo.addEventListener('click', function (e) {
-  e.preventDefault();
-  //With getBoundingClientRect() we get some coordinates of the target section
-  const s1coords = section1.getBoundingClientRect();
-  console.log(s1coords);
-  const s2coords = section2.getBoundingClientRect();
-  console.log(s2coords);
-  //the method is viewport dependent
-  // console.log(e.target.getBoundingClientRect());
-  //Window coordinates
-  console.log('Window coordinates (X/Y)', window.pageXOffset, pageYOffset);
-  console.log('Viewport coordinates xy', s1coords.left, s1coords.top);
-  // console.log(
-  //   'heigth/width ',
-  //   document.documentElement.clientHeight,
-  //   document.documentElement.clientWidth,
-  // );
+// h1.addEventListener('mouseenter', alertH1);
 
-  //Scrolling
-  //First we use scrollTo then we pass left and top . Left and Top . We need to get the document left and top and not the viewport ones . Current position + current scroll
+// //On mouse enter shortcut but its old!! With event listener i can add multiple functions
+// // h1.onmouseenter = function (e) {
+// //   alert('add event listener : Great you are reading the heading');
+// // };
 
-  //First way without smoothness
-  // window.scrollTo(
-  //   s2coords.left + window.pageXOffset,
-  //   s2coords.top + window.pageYOffset,
-  // );
+// setTimeout(() => {
+//   h1.removeEventListener('mouseenter', alertH1);
+// }, 3000);
 
-  //Second way with smoothness
-  // window.scrollTo({
-  //   left: s1coords.left + window.pageXOffset,
-  //   top: s1coords.top + window.pageYOffset,
-  //   behavior: 'smooth',
-  // });
-
-  //New easiest way!!!
-  section2.scrollIntoView({ behavior: 'smooth' });
-});
 //#endregion
 
-//Events
-const h1 = document.querySelector('h1');
-const alertH1 = function (e) {
-  alert('add event listener : Great you are reading the heading');
-  h1.removeEventListener('mouseenter', alertH1); //Removed the event listener
-};
+//#region Bubbling / Event propagation
+// //Bubbling / Event propagation
+// //rgb(255, 255 , 255)
+// //Random numbers generator on a range (known formula)
+// const randomInt = (min, max) =>
+//   Math.floor(Math.random() * (max - min + 1) + min);
 
-h1.addEventListener('mouseenter', alertH1);
+// //Generation of three different numbers for composing the color
+// const randomColor = () =>
+//   `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
 
-//On mouse enter shortcut but its old!! With event listener i can add multiple functions
-// h1.onmouseenter = function (e) {
-//   alert('add event listener : Great you are reading the heading');
-// };
+// console.log(randomColor(0, 255));
+
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   //Current target is this
+//   console.log('LInk', e.target, e.currentTarget);
+
+//   //Stop propagation but not good idea!!
+//   // e.stopPropagation();
+// });
+
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('Container', e.target, e.currentTarget);
+// });
+
+// document.querySelector('.nav').addEventListener(
+//   'click',
+//   function (e) {
+//     this.style.backgroundColor = randomColor();
+//     console.log('Nav', e.target, e.currentTarget);
+//   },
+//   true, //RARELY USED : With true , the nav appears on top , so the event search travel from the top , not from down , like in capturing phase
+// );
+//#endregion
+
+//#region Event delegation
+
+//#endregion
