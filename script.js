@@ -12,6 +12,10 @@ const btnScrollTo = document.querySelector('.btn--scroll-to');
 //Target section
 const section1 = document.querySelector('#section--1');
 const section2 = document.querySelector('#section--2');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
 
 //#region Modal window
 const openModal = function (e) {
@@ -138,9 +142,6 @@ console.log(h1.parentElement.children);
 //#endregion--------------------------
 
 //#region-------------Tabbed Component
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
 
 //Checking which is the target clicked , searching for closest .operations__tab
 tabsContainer.addEventListener('click', function (e) {
@@ -156,11 +157,55 @@ tabsContainer.addEventListener('click', function (e) {
 
   //Activate content area using dataset ( we take it dinamically with template string ) and adding the class
   document
-    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .querySelector(`.operations__content--${clicked.dataset.tab}`) //With this i obtain the number value
     .classList.add('operations__content--active');
 });
+//#endregion
 
-//TODO ask claude why we use datasets in html
+//Menu fade animation . No need to pass the opacity into the arguments
+const handleHover = function (e) {
+  //No child el of the links so i dont need to use closest
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    //We move up to search the el with that class . I can't use closest to search .nav__links
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+  }
+};
+
+//Passing argument into handler
+//Bind crea una funzione copia separata passando un argomento . L'evento e è implicito , viene passato automaticamente dal browser come primo parametro
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+
+nav.addEventListener('mouseout', handleHover.bind(1));
+
+//Navigation sticky effect
+//Bad to use this scroll event
+const initialCoords = section1.getBoundingClientRect();
+console.log(initialCoords);
+window.addEventListener('scroll', function (e) {
+  //When to apply the class sticky?
+  if (window.scrollY > initialCoords.top) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+});
+
+//Intersection Observer Api : observe change to the way object 
+const obsCallback
+const obsOptions =  {
+  //Root is the element that the target(section1 ) is intercepting
+  root : null, //Can select an element or use null which make the root watch for the entire viewport
+  //
+  threshold : 
+}
+const observer = new IntersectionObserver(obsCallback , obsOptions)
+observer.observe(section1)
+
+
 
 //#region-----------------------------
 
