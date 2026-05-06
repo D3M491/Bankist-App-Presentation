@@ -194,18 +194,20 @@ window.addEventListener('scroll', function (e) {
   else nav.classList.remove('sticky');
 });
 
-//Intersection Observer Api : observe change to the way object 
-const obsCallback
-const obsOptions =  {
+//Intersection Observer Api : observe change to the way object
+const obsCallback = function (entries, observer) {
+  entries.forEach(entry => {
+    console.log(entry);
+  });
+};
+const obsOptions = {
   //Root is the element that the target(section1 ) is intercepting
-  root : null, //Can select an element or use null which make the root watch for the entire viewport
-  //
-  threshold : 
-}
-const observer = new IntersectionObserver(obsCallback , obsOptions)
-observer.observe(section1)
-
-
+  root: null, //Can select an element or use null which make the root watch for the entire viewport
+  //Percentage of interception of where the callback functions will be called
+  threshold: 0.1, //Al 10% di visibilita del contenuto target , scatta la callback
+};
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(section1);
 
 //#region-----------------------------
 
