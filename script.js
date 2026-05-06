@@ -184,30 +184,67 @@ nav.addEventListener('mouseover', handleHover.bind(0.5));
 
 nav.addEventListener('mouseout', handleHover.bind(1));
 
-//Navigation sticky effect
-//Bad to use this scroll event
-const initialCoords = section1.getBoundingClientRect();
-console.log(initialCoords);
-window.addEventListener('scroll', function (e) {
-  //When to apply the class sticky?
-  if (window.scrollY > initialCoords.top) nav.classList.add('sticky');
-  else nav.classList.remove('sticky');
-});
+////////////////////////Navigation sticky effect
+//BAD VERSION
+// const initialCoords = section1.getBoundingClientRect();
+// console.log(initialCoords);
+// window.addEventListener('scroll', function (e) {
+//   //When to apply the class sticky?
+//   if (window.scrollY > initialCoords.top) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+// });
 
 //Intersection Observer Api : observe change to the way object
-const obsCallback = function (entries, observer) {
-  entries.forEach(entry => {
-    console.log(entry);
-  });
+// const obsCallback = function (entries, observer) {
+//   entries.forEach(entry => {
+//     console.log(entry);
+//   });
+// };
+// const obsOptions = {
+//   //Root is the element that the target(section1 ) is intercepting
+//   root: null, //Can select an element or use null which make the root watch for the entire viewport
+//   //Percentage of interception of where the callback functions will be called
+//   threshold: [0, 0.2], //Al 10% di visibilita del contenuto target , scatta la callback
+// };
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+// observer.observe(section1);
+
+//GOOOD VERSION WITH INTERSECTION OBSERVER
+const header = document.querySelector('.header');
+//Calcola l altezza del nav dinamicamente
+const navHeight = nav.getBoundingClientRect().height;
+
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  console.log(entry);
+  //Solo se l'entry non sta piu intercettando aggiungi la sticky (intercetta subito perche vede subito l'header)
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  //Quando l'entry sta intercettando rimuovi la sticky
+  else nav.classList.remove('sticky');
 };
-const obsOptions = {
-  //Root is the element that the target(section1 ) is intercepting
-  root: null, //Can select an element or use null which make the root watch for the entire viewport
-  //Percentage of interception of where the callback functions will be called
-  threshold: 0.1, //Al 10% di visibilita del contenuto target , scatta la callback
+const headerObs = new IntersectionObserver(stickyNav, {
+  root: null,
+  treshold: 0,
+  //Box alto quanto il nav applicato alla fine dell header
+  rootMargin: `${-navHeight}px`,
+});
+headerObs.observe(header);
+
+//Reveal sections
+const allSection = document.querySelectorAll('.section');
+
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry);
 };
-const observer = new IntersectionObserver(obsCallback, obsOptions);
-observer.observe(section1);
+const sectionObs = new IntersectionObserver(revealSection, {
+  root: null,
+  treshold: 0.15,
+});
+allSection.forEach(section => {
+  sectionObs.observe(section);
+  section.classList.add('section--hidden');
+});
 
 //#region-----------------------------
 
