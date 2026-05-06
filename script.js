@@ -234,7 +234,7 @@ headerObs.observe(header);
 const allSection = document.querySelectorAll('.section');
 
 const revealSection = function (entries, observer) {
-  const [entry] = entries;
+  const [entry] = entries; // Uguale a fare const entry = entries[0] , primo ed unico elemento osservato
   console.log(entry);
 };
 const sectionObs = new IntersectionObserver(revealSection, {
