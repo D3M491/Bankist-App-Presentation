@@ -216,7 +216,6 @@ const navHeight = nav.getBoundingClientRect().height;
 
 const stickyNav = function (entries) {
   const [entry] = entries;
-  console.log(entry);
   //Solo se l'entry non sta piu intercettando aggiungi la sticky (intercetta subito perche vede subito l'header)
   if (!entry.isIntersecting) nav.classList.add('sticky');
   //Quando l'entry sta intercettando rimuovi la sticky
@@ -224,9 +223,9 @@ const stickyNav = function (entries) {
 };
 const headerObs = new IntersectionObserver(stickyNav, {
   root: null,
-  treshold: 0,
+  threshold: 0,
   //Box alto quanto il nav applicato alla fine dell header
-  rootMargin: `${-navHeight}px`,
+  rootMargin: `-${navHeight}px`,
 });
 headerObs.observe(header);
 
@@ -234,16 +233,51 @@ headerObs.observe(header);
 const allSection = document.querySelectorAll('.section');
 
 const revealSection = function (entries, observer) {
-  const [entry] = entries; // Uguale a fare const entry = entries[0] , primo ed unico elemento osservato
-  console.log(entry);
+  //Applica la logica a tutti gli observer
+  entries.forEach(entry => {
+    //Se non sta intercettando ,termina la funzione
+    if (!entry.isIntersecting) return;
+    //Rimuovi la classe
+    entry.target.classList.remove('section--hidden');
+    //Rimuovi l'observer ,  non serve piu
+    observer.unobserve(entry.target);
+  });
+  //const [entry] = entries; // Uguale a fare const entry = entries[0] , primo ed unico elemento osservato
 };
 const sectionObs = new IntersectionObserver(revealSection, {
   root: null,
-  treshold: 0.15,
+  threshold: 0.15,
 });
 allSection.forEach(section => {
   sectionObs.observe(section);
   section.classList.add('section--hidden');
+});
+
+//Lazy loading
+//Seleziona le img con attributo data-src
+const imgTargets = document.querySelectorAll('img[data-src]');
+const loadImg = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry);
+  //Sostituire src lazy con data-src
+  entry.target.src = entry.target.dataset.src;
+  //Attendi che abbia caricato prima di rimuovere la classe lazy
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+  //Non osservare piu
+  observer.unobserve(entry.target);
+};
+const imgObs = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  //Le immagini vengono visualizzate prima
+  rootMargin: ' 200px',
+});
+
+//Osservando tutte le img
+imgTargets.forEach(img => {
+  imgObs.observe(img);
 });
 
 //#region-----------------------------
