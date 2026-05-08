@@ -208,7 +208,7 @@ imgTargets.forEach(img => {
 //Demo opening
 //Appena clicchi su button si apre la demo version nella stessa pagina e non in full screen
 const bntOpenDemo = document.querySelectorAll('.features__demo-btn');
-const btnCloseDemo = document.querySelectorAll('.features__demo-close-btn');
+// const btnCloseDemo = document.querySelectorAll('.features__demo-close-btn');
 
 bntOpenDemo.forEach(btn => {
   btn.addEventListener('click', function () {
@@ -221,21 +221,30 @@ bntOpenDemo.forEach(btn => {
     </div>`,
     );
     overlay.classList.remove('hidden');
+    const btnCloseDemo = document.querySelector('.features__demo-close-btn');
+    btnCloseDemo.addEventListener('click', function (e) {
+      if (e.target === 'Escape') closeDemo(btn);
+      overlay.addEventListener('click', closeDemo(btn));
+    });
   });
 });
 
-btnCloseDemo.forEach(btn => {
-  btn.addEventListener('click', function (e) {
-    e.preventDefault();
-    overlay.classList.remove('hidden');
-    btn.parentElement.querySelector('.features__demo-modal').remove();
-    if (e.target === 'Escape') {
-      document.querySelector('.features__demo-modal').remove();
+const closeDemo = function (btn) {
+  btn.parentElement.querySelector('.features__demo-modal').remove();
+  overlay.classList.add('hidden');
+};
 
-      overlay.classList.remove('hidden');
-    }
-  });
-});
+// btnCloseDemo.forEach(btn => {
+//   btn.addEventListener('click', function (e) {
+//     // e.preventDefault();
+//     console.log('test');
+//     console.log(btn.parentElement.querySelector('.features__demo-modal'));
+
+//     if (e.target === 'Escape') {
+//       btn.parentElement.querySelector('.features__demo-modal').remove();
+//     }
+//   });
+// });
 //#region-----------------------------
 
 // //How to select create and delete elements with js
