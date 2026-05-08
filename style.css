@@ -38,7 +38,9 @@ body {
   padding: 15rem 3rem;
   border-top: 1px solid #ddd;
 
-  transition: transform 1s, opacity 1s;
+  transition:
+    transform 1s,
+    opacity 1s;
 }
 
 .section--hidden {
@@ -236,6 +238,46 @@ h4 {
   margin: 0 12rem;
 }
 
+.features__demo-container {
+  position: relative;
+}
+
+.features__demo-text {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  color: #888;
+}
+
+.features__demo-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  padding: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8rem;
+  height: 8rem;
+  box-shadow: 3px 5px rgba(grey, 0.5);
+}
+
+.features__btn-icon {
+  width: 6rem;
+  height: 6rem;
+  animation: arrowUpRight 0.3s infinite alternate;
+}
+
+@keyframes arrowUpRight {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(3px, -3px);
+  }
+}
 .features__img {
   width: 100%;
 }
