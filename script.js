@@ -95,12 +95,12 @@ const handleHover = function (e) {
     const link = e.target;
     //Saliamo per cercare l'elemento con quella classe. Non posso usare closest per cercare .nav__links
     const siblings = link.closest('.nav').querySelectorAll('.nav__link');
-    const logo = link.closest('.nav').querySelector('img');
+    // const logo = link.closest('.nav').querySelector('img');
 
     siblings.forEach(el => {
       if (el !== link) el.style.opacity = this;
     });
-    logo.style.opacity = this;
+    // logo.style.opacity = this;
   }
 };
 
@@ -217,15 +217,21 @@ bntOpenDemo.forEach(btn => {
       ` 
     <div class="features__demo-modal">                                           
       <iframe src="https://d3m491.github.io/Bankist-App/" class="demo-iframe"></iframe>
-      <button class="btn features__demo-close-btn"></button>
+      <button class="btn features__demo-close-btn">
+            <svg class="demo__close-btn-svg">
+              <use href="img/icons.svg#circle-x"></use>
+            </svg>
+      </button>
     </div>`,
     );
     overlay.classList.remove('hidden');
+    //Crea button di chiusura
     const btnCloseDemo = document.querySelector('.features__demo-close-btn');
     btnCloseDemo.addEventListener('click', function (e) {
-      if (e.target === 'Escape') closeDemo(btn);
-      overlay.addEventListener('click', closeDemo(btn));
+      closeDemo(btn);
     });
+    //Chiusura cliccando fuori dal modale
+    overlay.addEventListener('click', closeDemo.bind(null, btn));
   });
 });
 

@@ -751,6 +751,14 @@ h4 {
   right: 2rem;
   width: 2rem;
   height: 2rem;
+  padding: 0;
+}
+
+.demo__close-btn-svg {
+  width: 1rem;
+  height: 1rem;
+  z-index: 1;
+  fill: #222;
 }
 
 /* COOKIE MESSAGE */
