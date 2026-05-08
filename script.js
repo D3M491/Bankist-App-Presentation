@@ -208,16 +208,32 @@ imgTargets.forEach(img => {
 //Demo opening
 //Appena clicchi su button si apre la demo version nella stessa pagina e non in full screen
 const bntOpenDemo = document.querySelectorAll('.features__demo-btn');
+const btnCloseDemo = document.querySelectorAll('.features__demo-close-btn');
 
 bntOpenDemo.forEach(btn => {
   btn.addEventListener('click', function () {
-    btn.parentElement.insertaAdjacentHTML =
-      ('afterbegin',
+    btn.parentElement.insertAdjacentHTML(
+      'afterbegin',
       ` 
     <div class="features__demo-modal">                                           
-      <iframe src="https://github.com/D3M491/NumbersDatesTimers" class="demo-iframe"></iframe>
+      <iframe src="https://d3m491.github.io/Bankist-App/" class="demo-iframe"></iframe>
       <button class="btn features__demo-close-btn"></button>
-    </div>`);
+    </div>`,
+    );
+    overlay.classList.remove('hidden');
+  });
+});
+
+btnCloseDemo.forEach(btn => {
+  btn.addEventListener('click', function (e) {
+    e.preventDefault();
+    overlay.classList.remove('hidden');
+    btn.parentElement.querySelector('.features__demo-modal').remove();
+    if (e.target === 'Escape') {
+      document.querySelector('.features__demo-modal').remove();
+
+      overlay.classList.remove('hidden');
+    }
   });
 });
 //#region-----------------------------
