@@ -1,23 +1,26 @@
 'use strict';
 
 ///////////////////////////////////////
-// Modal window
+// Pannello modale
 
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-//Button that will trigger the scroll animation
+
+//Btn che fa scattare l'animazione
 const btnScrollTo = document.querySelector('.btn--scroll-to');
-//Target section
+//Sezioni target
 const section1 = document.querySelector('#section--1');
 const section2 = document.querySelector('#section--2');
 const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
+//Titolo h1
+const h1 = document.querySelector('h1');
 
-//#region Modal window
+//Pannello modale apertura e chiusura
 const openModal = function (e) {
   e.preventDefault();
   modal.classList.remove('hidden');
@@ -31,143 +34,66 @@ const closeModal = function () {
 
 btnsOpenModal.forEach(btn => btn.addEventListener('click', openModal));
 
-// for (let i = 0; i < btnsOpenModal.length; i++)
-//   btnsOpenModal[i].addEventListener('click', openModal);
-
 btnCloseModal.addEventListener('click', closeModal);
 overlay.addEventListener('click', closeModal);
 
+//Chiusura con esc
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
     closeModal();
   }
 });
-//#endregion
 
-//#region Scroll animation
+//Animazione di scroll
 btnScrollTo.addEventListener('click', function (e) {
   e.preventDefault();
-  //With getBoundingClientRect() we get some coordinates of the target section
+  //Ottieni le coordinate della section1
   const s1coords = section1.getBoundingClientRect();
 
-  //the method is viewport dependent
-  // console.log(e.target.getBoundingClientRect());
-  //Window coordinates
-  // console.log('Window coordinates (X/Y)', window.pageXOffset, pageYOffset);
-  // console.log('Viewport coordinates xy', s1coords.left, s1coords.top);
-  // console.log(
-  //   'heigth/width ',
-  //   document.documentElement.clientHeight,
-  //   document.documentElement.clientWidth,
-  // );
-
   //Scrolling
-  //First we use scrollTo then we pass left and top . Left and Top . We need to get the document left and top and not the viewport ones . Current position + current scroll
-
-  //First way without smoothness
-  // window.scrollTo(
-  //   s2coords.left + window.pageXOffset,
-  //   s2coords.top + window.pageYOffset,
-  // );
-
-  //Second way with smoothness
-  // window.scrollTo({
-  //   left: s1coords.left + window.pageXOffset,
-  //   top: s1coords.top + window.pageYOffset,
-  //   behavior: 'smooth',
-  // });
-
-  //New easiest way!!!
   section1.scrollIntoView({ behavior: 'smooth' });
 });
-//#endregion
 
-//#region Page navigation
-// document.querySelectorAll('.nav__link').forEach(el => {
-//   el.addEventListener('click', function (e) {
-//     e.preventDefault();
-//     //We select the href link for the target section
-//     const id = this.getAttribute('href');
-//     //Attach a scroll smooth to all id
-//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-//   });
-// });
-
-//With event delegation (bubbles up) .
-// 1) Add event listener to common parent element
-// 2) Determine what element originated the event
+//Navigazione pagina con event delegation
+// 1) Aggiungi event listener ad un elemento padre
 document.querySelector('.nav__links').addEventListener('click', function (e) {
   e.preventDefault();
 
-  //What element originated the link?
-  console.log(e.target);
-  //Matching strategy : checking if the target clicked has the class nav__link
+  // 2) Determina quale elemento ha originato l'evento
+  //Matching strategy : controlla se l'elemento target ha la classe che mi interessa
   if (e.target.classList.contains('nav__link')) {
-    //We select the href link for the target section , this time te target is not this keyword
+    //Ottieni il link
     const id = e.target.getAttribute('href');
-    //Attach a scroll smooth to all id
+    //Aggiungi uno smooth scroll a quell'id
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
 });
 
-//#endregion
-
-//#region------------DOM Traversing
-const h1 = document.querySelector('h1');
-//Going downwards : childs-
-console.log(h1.querySelectorAll('.highlight'));
-console.log(h1.children);
-h1.firstElementChild.style.color = 'white';
-h1.lastElementChild.style.color = 'black';
-
-//Going upwards : parents
-console.log(h1.parentNode);
-console.log(h1.parentElement);
-
-//Closest receive a query string . Search for the closest element that as the specified class
-// h1.closest('.header').style.background = 'var(--gradient-secondary)';
-//Going sideways
-console.log(h1.previousElementSibling);
-console.log(h1.nextElementSibling);
-
-console.log(h1.previousSibling);
-console.log(h1.nextSibling);
-
-console.log(h1.parentElement.children);
-
-//Spreading the html collection into an array , iteration and application of scale only to el that are not h1
-// [...h1.parentElement.children].forEach(el => {
-//   if (el !== h1) el.style.transform = 'scale(.5)';
-// });
-//#endregion--------------------------
-
-//#region-------------Tabbed Component
-
-//Checking which is the target clicked , searching for closest .operations__tab
+//Componente a schede
+//Controlla qual e il target cliccato cercando il .operations__tab piu vicino
 tabsContainer.addEventListener('click', function (e) {
   e.preventDefault();
   const clicked = e.target.closest('.operations__tab'); //Btn
-  //Guard clause : if we get null so no correct click , return the function
+  //Guard clause: se otteniamo null non e un click valido, quindi termina la funzione
   if (!clicked) return;
-  //Removing class before adding it
+  //Rimuovi la classe prima di aggiungerla
   tabs.forEach(t => t.classList.remove('operations__tab--active'));
   tabsContent.forEach(c => c.classList.remove('operations__content--active'));
-  //Adding tab
+  //Aggiungi la tab
   clicked.classList.add('operations__tab--active');
 
-  //Activate content area using dataset ( we take it dinamically with template string ) and adding the class
+  //Attiva l'area contenuto usando il dataset e aggiungendo la classe
   document
-    .querySelector(`.operations__content--${clicked.dataset.tab}`) //With this i obtain the number value
+    .querySelector(`.operations__content--${clicked.dataset.tab}`) //Con questo ottengo il valore numerico
     .classList.add('operations__content--active');
 });
-//#endregion
 
-//Menu fade animation . No need to pass the opacity into the arguments
+//Animazione fade del menu. Non serve passare l'opacita negli argomenti
 const handleHover = function (e) {
-  //No child el of the links so i dont need to use closest
+  //I link non hanno elementi figli, quindi non serve usare closest
   if (e.target.classList.contains('nav__link')) {
     const link = e.target;
-    //We move up to search the el with that class . I can't use closest to search .nav__links
+    //Saliamo per cercare l'elemento con quella classe. Non posso usare closest per cercare .nav__links
     const siblings = link.closest('.nav').querySelectorAll('.nav__link');
     const logo = link.closest('.nav').querySelector('img');
 
@@ -178,38 +104,38 @@ const handleHover = function (e) {
   }
 };
 
-//Passing argument into handler
+//Passa un argomento nell'handler
 //Bind crea una funzione copia separata passando un argomento . L'evento e è implicito , viene passato automaticamente dal browser come primo parametro
 nav.addEventListener('mouseover', handleHover.bind(0.5));
 
 nav.addEventListener('mouseout', handleHover.bind(1));
 
-////////////////////////Navigation sticky effect
-//BAD VERSION
+////////////////////////Effetto navigazione sticky
+//VERSIONE NON OTTIMALE
 // const initialCoords = section1.getBoundingClientRect();
 // console.log(initialCoords);
 // window.addEventListener('scroll', function (e) {
-//   //When to apply the class sticky?
+//   //Quando applicare la classe sticky?
 //   if (window.scrollY > initialCoords.top) nav.classList.add('sticky');
 //   else nav.classList.remove('sticky');
 // });
 
-//Intersection Observer Api : observe change to the way object
+//Intersection Observer API: osserva i cambiamenti dell'oggetto target
 // const obsCallback = function (entries, observer) {
 //   entries.forEach(entry => {
 //     console.log(entry);
 //   });
 // };
 // const obsOptions = {
-//   //Root is the element that the target(section1 ) is intercepting
-//   root: null, //Can select an element or use null which make the root watch for the entire viewport
-//   //Percentage of interception of where the callback functions will be called
+//   //Root e l'elemento che il target (section1) sta intersecando
+//   root: null, //Puoi selezionare un elemento o usare null per osservare l'intera viewport
+//   //Percentuale di intersezione a cui vengono chiamate le callback
 //   threshold: [0, 0.2], //Al 10% di visibilita del contenuto target , scatta la callback
 // };
 // const observer = new IntersectionObserver(obsCallback, obsOptions);
 // observer.observe(section1);
 
-//GOOOD VERSION WITH INTERSECTION OBSERVER
+//VERSIONE CORRETTA CON INTERSECTION OBSERVER
 const header = document.querySelector('.header');
 //Calcola l altezza del nav dinamicamente
 const navHeight = nav.getBoundingClientRect().height;
@@ -229,7 +155,7 @@ const headerObs = new IntersectionObserver(stickyNav, {
 });
 headerObs.observe(header);
 
-//Reveal sections
+//Mostra le sezioni
 const allSection = document.querySelectorAll('.section');
 
 const revealSection = function (entries, observer) {
@@ -242,7 +168,6 @@ const revealSection = function (entries, observer) {
     //Rimuovi l'observer ,  non serve piu
     observer.unobserve(entry.target);
   });
-  //const [entry] = entries; // Uguale a fare const entry = entries[0] , primo ed unico elemento osservato
 };
 const sectionObs = new IntersectionObserver(revealSection, {
   root: null,
@@ -253,7 +178,7 @@ allSection.forEach(section => {
   section.classList.add('section--hidden');
 });
 
-//Lazy loading
+//Caricamento lazy
 //Seleziona le img con attributo data-src
 const imgTargets = document.querySelectorAll('img[data-src]');
 const loadImg = function (entries, observer) {
@@ -280,6 +205,21 @@ imgTargets.forEach(img => {
   imgObs.observe(img);
 });
 
+//Demo opening
+//Appena clicchi su button si apre la demo version nella stessa pagina e non in full screen
+const bntOpenDemo = document.querySelectorAll('.features__demo-btn');
+
+bntOpenDemo.forEach(btn => {
+  btn.addEventListener('click', function () {
+    btn.parentElement.insertaAdjacentHTML =
+      ('afterbegin',
+      ` 
+    <div class="features__demo-modal">                                           
+      <iframe src="https://github.com/D3M491/NumbersDatesTimers" class="demo-iframe"></iframe>
+      <button class="btn features__demo-close-btn"></button>
+    </div>`);
+  });
+});
 //#region-----------------------------
 
 // //How to select create and delete elements with js
