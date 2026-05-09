@@ -110,32 +110,7 @@ nav.addEventListener('mouseover', handleHover.bind(0.5));
 
 nav.addEventListener('mouseout', handleHover.bind(1));
 
-////////////////////////Effetto navigazione sticky
-//VERSIONE NON OTTIMALE
-// const initialCoords = section1.getBoundingClientRect();
-// console.log(initialCoords);
-// window.addEventListener('scroll', function (e) {
-//   //Quando applicare la classe sticky?
-//   if (window.scrollY > initialCoords.top) nav.classList.add('sticky');
-//   else nav.classList.remove('sticky');
-// });
-
-//Intersection Observer API: osserva i cambiamenti dell'oggetto target
-// const obsCallback = function (entries, observer) {
-//   entries.forEach(entry => {
-//     console.log(entry);
-//   });
-// };
-// const obsOptions = {
-//   //Root e l'elemento che il target (section1) sta intersecando
-//   root: null, //Puoi selezionare un elemento o usare null per osservare l'intera viewport
-//   //Percentuale di intersezione a cui vengono chiamate le callback
-//   threshold: [0, 0.2], //Al 10% di visibilita del contenuto target , scatta la callback
-// };
-// const observer = new IntersectionObserver(obsCallback, obsOptions);
-// observer.observe(section1);
-
-//VERSIONE CORRETTA CON INTERSECTION OBSERVER
+//Effetto navigazione sticky
 const header = document.querySelector('.header');
 //Calcola l altezza del nav dinamicamente
 const navHeight = nav.getBoundingClientRect().height;
@@ -208,8 +183,6 @@ imgTargets.forEach(img => {
 //Demo opening
 //Appena clicchi su button si apre la demo version nella stessa pagina e non in full screen
 const bntOpenDemo = document.querySelectorAll('.features__demo-btn');
-// const btnCloseDemo = document.querySelectorAll('.features__demo-close-btn');
-
 bntOpenDemo.forEach(btn => {
   btn.addEventListener('click', function () {
     btn.parentElement.insertAdjacentHTML(
@@ -240,174 +213,49 @@ const closeDemo = function (btn) {
   overlay.classList.add('hidden');
 };
 
-// btnCloseDemo.forEach(btn => {
-//   btn.addEventListener('click', function (e) {
-//     // e.preventDefault();
-//     console.log('test');
-//     console.log(btn.parentElement.querySelector('.features__demo-modal'));
+//Slider
+const slider = document.querySelector('.slider');
+const slides = document.querySelectorAll('.slide');
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
 
-//     if (e.target === 'Escape') {
-//       btn.parentElement.querySelector('.features__demo-modal').remove();
-//     }
-//   });
-// });
-//#region-----------------------------
+//Slider attuale
+let curSlide = 0;
+//Definisci il limite di slide
+const maxSlide = slides.length - 1;
 
-// //How to select create and delete elements with js
-// console.log(document.documentElement);
-// console.log(document.head);
-// console.log(document.body);
+//Logica slider
+const goToSlide = function (slide) {
+  slides.forEach((s, i) => {
+    //Sottrai l'index alla current slide
+    s.style.transform = `translateX(${(i - slide) * 100}%)`;
+  });
+};
 
-// const header = document.querySelector('.header');
-// const allSections = document.querySelectorAll('.section');
+//Subito parte dalla prima slide
+goToSlide(0);
 
-// console.log(allSections);
+//Prossima slide
+const nextSlide = function () {
+  //Se siamo all'ultima slide , riportami alla prima
+  if (curSlide === maxSlide) {
+    curSlide = 0;
+    //Altrimenti continua ad andare avanti
+  } else {
+    curSlide++;
+  }
+  goToSlide(curSlide);
+};
+btnRight.addEventListener('click', nextSlide);
 
-// document.getElementById('section--1');
-// const allButtons = document.getElementsByTagName('button');
-// console.log(allButtons); //Html colletction is different than nodelist . It updates automatically as we make some changes in it`
-
-// document.getElementsByClassName('btn');
-
-// //Creating and inserting elements
-// //1).insertAdjacentHTML
-// //2)CREATE ELEMENT : It's not on the dom , its simply an object we can use
-// const message = document.createElement('div');
-// message.classList.add('cookie-message');
-// message.innerHTML = `We use cookies for improved functionality and analytics <button class  ="btn btn--close-cookie ">Got it!</button> `;
-
-// //Last child of header , otherwise the first child would have been prepend
-// header.append(message);
-// //header.prepend(message); //We can't put it in two places , js will choose the last one DOM element is unique
-
-// //CLONENODE : We can clone it to have in both places , using cloneNode( the true stands for passing all the child element or not )
-// // header.prepend(message.cloneNode(true));
-
-// //BEFORE AND AFTER , the element get placed directly before or after, outside the header and not in it as a child
-// header.before(message);
-// header.append(message);
-
-// //DELETE ELEMENTS USING REMOVE
-// document
-//   .querySelector('.btn--close-cookie')
-//   //New way
-//   .addEventListener('click', () => message.remove());
-// //Old way
-// //message.parentElement.removeChild())
-
-// //Styles
-// //These are inline styles
-// message.style.backgroundColor = '#37384d';
-// message.style.width = ' 120%';
-
-// //This selection works only on the styles we created inline manually
-// console.log(message.style.backgroundColor);
-// console.log(message.style.color); //Empty string
-
-// //Way to get the other styles
-// console.log(getComputedStyle(message).height);
-
-// message.style.height =
-//   //We need to use parseFloat because this is a floating number ( not integer )
-//   Number.parseFloat(getComputedStyle(message).height) + 30 + 'px';
-// console.log(getComputedStyle(message).height);
-
-// //SET PROPERTY ON THE ROOT , first value is the property name , second is the value
-// document.documentElement.style.setProperty('--color-primary', 'white');
-
-// //ATTRIBUTES
-// const logo = document.querySelector('.nav__logo');
-// //We can call the attributes on an element
-// console.log(logo.src);
-// console.log(logo.className);
-
-// //I can set also an attribute
-// logo.alt = 'Beautiful minimalist logo';
-// console.log(logo.alt);
-
-// //Setting non standard attribute
-// logo.setAttribute('company', 'Google');
-
-// console.log(logo.designer); //Undefined , i can call only the standard attributes of the img el
-// console.log(logo.getAttribute('designer')); //I can however select the non standard attribute
-// console.log(logo.getAttribute('company'));
-
-// //To get the src path explicit we need to get the attribute on it
-// console.log(logo.src);
-// console.log(logo.getAttribute('src'));
-
-// const link = document.querySelector('.nav__link--btn');
-// console.log(link.href); //Whole link
-// console.log(link.getAttribute('href')); //Only the text of the link
-
-// //Data attributes , dataset then camelCase on the other words (Attribute is => data-version-number = "3.0")
-// console.log(logo.dataset.versionNumber); //Used for storing data into user interface
-
-// //Classes
-// logo.classList.add('c', 'i'); //I can also pass multiple classes
-// logo.classList.remove('c');
-// logo.classList.toggle('c');
-// logo.classList.contains('c');
-
-// logo.className = 'Jonas'; //Don't use , it overwrite all existing class
-
-//#region Events
-// const h1 = document.querySelector('h1');
-// const alertH1 = function (e) {
-//   alert('add event listener : Great you are reading the heading');
-//   // h1.removeEventListener('mouseenter', alertH1); //Removed the event listener
-// };
-
-// h1.addEventListener('mouseenter', alertH1);
-
-// //On mouse enter shortcut but its old!! With event listener i can add multiple functions
-// // h1.onmouseenter = function (e) {
-// //   alert('add event listener : Great you are reading the heading');
-// // };
-
-// setTimeout(() => {
-//   h1.removeEventListener('mouseenter', alertH1);
-// }, 3000);
-
-//#endregion
-
-//#region Bubbling / Event propagation
-// //Bubbling / Event propagation
-// //rgb(255, 255 , 255)
-// //Random numbers generator on a range (known formula)
-// const randomInt = (min, max) =>
-//   Math.floor(Math.random() * (max - min + 1) + min);
-
-// //Generation of three different numbers for composing the color
-// const randomColor = () =>
-//   `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
-
-// console.log(randomColor(0, 255));
-
-// document.querySelector('.nav__link').addEventListener('click', function (e) {
-//   this.style.backgroundColor = randomColor();
-//   //Current target is this
-//   console.log('LInk', e.target, e.currentTarget);
-
-//   //Stop propagation but not good idea!!
-//   // e.stopPropagation();
-// });
-
-// document.querySelector('.nav__links').addEventListener('click', function (e) {
-//   this.style.backgroundColor = randomColor();
-//   console.log('Container', e.target, e.currentTarget);
-// });
-
-// document.querySelector('.nav').addEventListener(
-//   'click',
-//   function (e) {
-//     this.style.backgroundColor = randomColor();
-//     console.log('Nav', e.target, e.currentTarget);
-//   },
-//   true, //RARELY USED : With true , the nav appears on top , so the event search travel from the top , not from down , like in capturing phase
-// );
-//#endregion
-
-//#region Event delegation
-
-//#endregion
+//Slide precedente
+const prevSlide = function () {
+  //Se siamo alla prima slide , riportami all'ultima
+  if (curSlide === 0) {
+    curSlide = maxSlide;
+  } else {
+    curSlide--;
+  }
+  goToSlide(curSlide);
+};
+btnLeft.addEventListener('click', prevSlide);
