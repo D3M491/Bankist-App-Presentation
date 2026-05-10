@@ -338,3 +338,22 @@ window.addEventListener('load', function (e) {
 //   //Don't need in modern browsers
 //   // e.returnValue = ';
 // });
+
+//Regular way to include js file (always at the end of the body)
+//script src ecc.. parsing html then fetching the script then fnishing parsing html
+
+//Async in the head ( no need to put it in the end of the body )
+//script loaded at same time as html is parsed but the html get interrupted to execute the script then it continue to parse
+
+//Dom content loaded does not wait for async scripts!!
+//Scripts not guarantee to execute in order
+
+//Defer in the head ( no need to put it in the end of the body )
+//script loaded at same time as html but html is never interrupted
+
+//Dom content loaded fires after defer script is executed!!
+//Scripts are executed in order
+
+//If i ever need to include a third part library , the library scrips should be loaded before my script => defer ( ordered )
+
+//For any library which doesen't need order we can use async
