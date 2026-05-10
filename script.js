@@ -214,48 +214,127 @@ const closeDemo = function (btn) {
 };
 
 //Slider
-const slider = document.querySelector('.slider');
-const slides = document.querySelectorAll('.slide');
-const btnLeft = document.querySelector('.slider__btn--left');
-const btnRight = document.querySelector('.slider__btn--right');
+const slider = function () {
+  const slider = document.querySelector('.slider');
+  const slides = document.querySelectorAll('.slide');
+  const btnLeft = document.querySelector('.slider__btn--left');
+  const btnRight = document.querySelector('.slider__btn--right');
+  const dotContainer = document.querySelector('.dots');
 
-//Slider attuale
-let curSlide = 0;
-//Definisci il limite di slide
-const maxSlide = slides.length - 1;
+  //Slider attuale
+  let curSlide = 0;
+  //Definisci il limite di slide
+  const maxSlide = slides.length - 1;
 
-//Logica slider
-const goToSlide = function (slide) {
-  slides.forEach((s, i) => {
-    //Sottrai l'index alla current slide
-    s.style.transform = `translateX(${(i - slide) * 100}%)`;
+  //Functions
+  //Crea un pulsante dot per ogni slide
+  const createDots = function () {
+    slides.forEach((s, i) => {
+      dotContainer.insertAdjacentHTML(
+        'beforeend',
+
+        `<button class="dots__dot dots__dot--active" data-slide="${i}">
+      </button>`,
+      );
+    });
+  };
+
+  //Effetto dot attivo
+  const activateDots = function (slide) {
+    //Seleziona tutti i dot e rimuovi classe active
+    document.querySelectorAll('.dots__dot').forEach(dot => {
+      dot.classList.remove('dots__dot--active');
+    });
+
+    //Seleziona utilizzando il parametro slide , il dot attivo
+    document
+      .querySelector(`.dots__dot[data-slide="${slide}"]`)
+      .classList.add('dots__dot--active');
+  };
+
+  //Logica slider
+  const goToSlide = function (slide) {
+    slides.forEach((s, i) => {
+      //Sottrai l'index alla current slide ( voglio ottenere questo : 0% , 100% , 200%)
+      s.style.transform = `translateX(${(i - slide) * 100}%)`;
+    });
+  };
+
+  //Prossima slide
+  const nextSlide = function () {
+    //Se siamo all'ultima slide , riportami alla prima
+    if (curSlide === maxSlide) {
+      curSlide = 0;
+      //Altrimenti continua ad andare avanti
+    } else {
+      curSlide++;
+    }
+    goToSlide(curSlide);
+    activateDots(curSlide);
+  };
+
+  //Inizializzazione
+  const init = function () {
+    goToSlide(0);
+    createDots();
+    activateDots(0);
+  };
+
+  init();
+
+  btnRight.addEventListener('click', nextSlide);
+
+  //Slide precedente
+  const prevSlide = function () {
+    //Se siamo alla prima slide , riportami all'ultima
+    if (curSlide === 0) {
+      curSlide = maxSlide;
+    } else {
+      curSlide--;
+    }
+    goToSlide(curSlide);
+    activateDots(curSlide);
+  };
+  btnLeft.addEventListener('click', prevSlide);
+
+  //Cambia slide con le frecce
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  //Event listener dei dot
+  dotContainer.addEventListener('click', function (e) {
+    //Event delegation , cerca gli elementi con la classe dot
+    if (e.target.classList.contains('dots__dot')) {
+      //Ottieni il numero di slide
+      const slide = Number(e.target.dataset.slide);
+      //Vai a slide che corrisponde al dot cliccato
+      goToSlide(slide);
+      //Attiva il dot corrente
+      activateDots(slide);
+    }
   });
 };
 
-//Subito parte dalla prima slide
-goToSlide(0);
+slider();
 
-//Prossima slide
-const nextSlide = function () {
-  //Se siamo all'ultima slide , riportami alla prima
-  if (curSlide === maxSlide) {
-    curSlide = 0;
-    //Altrimenti continua ad andare avanti
-  } else {
-    curSlide++;
-  }
-  goToSlide(curSlide);
-};
-btnRight.addEventListener('click', nextSlide);
+//Course------------------------------
+//Caricamento del dom
+document.addEventListener('DOMContentLoaded', function (e) {
+  console.log('Html parsed and dom three built', e);
+});
 
-//Slide precedente
-const prevSlide = function () {
-  //Se siamo alla prima slide , riportami all'ultima
-  if (curSlide === 0) {
-    curSlide = maxSlide;
-  } else {
-    curSlide--;
-  }
-  goToSlide(curSlide);
-};
-btnLeft.addEventListener('click', prevSlide);
+//Load event totale
+window.addEventListener('load', function (e) {
+  console.log('page fully loaded');
+});
+
+// //Evento prima che l'utente esca dal sito (deve aver interagito prima con la pagina altrimenti non triggera l'evento)
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault();
+//   console.log(e);
+//   //Se vogliamo displayare una leaving confrimation dobbiamo settare una stringa vuota a returnValue
+//   //Don't need in modern browsers
+//   // e.returnValue = ';
+// });
