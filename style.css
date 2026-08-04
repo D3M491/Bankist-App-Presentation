@@ -236,14 +236,12 @@ img {
 
 .header__title {
   flex: 1;
-
   max-width: 115rem;
   display: grid;
   grid-template-columns: 3fr 2fr;
   row-gap: 3rem;
   align-content: center;
   justify-content: center;
-
   align-items: start;
   justify-items: start;
 }
@@ -254,6 +252,20 @@ h1 {
 }
 
 @media (max-width: 900px) {
+  .header {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .header__title {
+    display: flex;
+    flex: 0;
+    flex-direction: column;
+    align-items: center;
+  }
+
   h1 {
     font-size: 4rem;
     line-height: 1.15;
@@ -276,6 +288,12 @@ h4 {
   grid-column: 2 / 3;
   grid-row: 1 / span 4;
   transform: translateY(-6rem);
+}
+
+@media (max-width: 900px) {
+  .header__img {
+    width: 80%;
+  }
 }
 
 .highlight {

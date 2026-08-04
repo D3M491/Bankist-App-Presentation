@@ -1,5 +1,9 @@
 'use strict';
 
+//Menu navigation
+const nav = document.querySelector('.nav');
+const menuIcon = document.querySelector('.nav__menu-icon');
+
 // Pannello modale
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
@@ -14,10 +18,9 @@ const section2 = document.querySelector('#section--2');
 const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
-const nav = document.querySelector('.nav');
-const menuIcon = document.querySelector('.nav__menu-icon');
+
 const h1 = document.querySelector('h1');
-ù;
+
 //Mobile menu logic
 const toggleMobileMenu = function () {
   //Keeps it green while menu is open
@@ -35,10 +38,16 @@ menuIcon.addEventListener('click', function (e) {
   toggleMobileMenu();
 });
 
-//todo fix closing menu on modal x press
+document.querySelectorAll('.nav__link').forEach(link =>
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    toggleMobileMenu();
+  }),
+);
+
 overlay.addEventListener('click', () => {
-  toggleMobileMenu();
   closeModal();
+  toggleMobileMenu();
 });
 
 //Pannello modale apertura e chiusura
@@ -51,6 +60,10 @@ const openModal = function (e) {
 const closeModal = function () {
   modal.classList.add('hidden');
   overlay.classList.add('hidden');
+  if (menuIcon.classList.contains('nav__menu-open')) {
+    toggleMobileMenu();
+    overlay.classList.toggle('hidden');
+  }
 };
 
 btnsOpenModal.forEach(btn => btn.addEventListener('click', openModal));
