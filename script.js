@@ -2,7 +2,6 @@
 
 ///////////////////////////////////////
 // Pannello modale
-
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
@@ -17,6 +16,7 @@ const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
+const menuIcon = document.querySelector('.nav__menu-icon');
 //Titolo h1
 const h1 = document.querySelector('h1');
 
@@ -319,41 +319,13 @@ const slider = function () {
 
 slider();
 
-//Course------------------------------
-//Caricamento del dom
-document.addEventListener('DOMContentLoaded', function (e) {
-  console.log('Html parsed and dom three built', e);
+//Menu logic
+menuIcon.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  menuIcon.classList.toggle('nav__menu-open');
+  //Show modal
+  document.querySelector('.nav__links').classList.toggle('nav__link-mobile');
+  //Show overlay
+  overlay.classList.toggle('hidden');
 });
-
-//Load event totale
-window.addEventListener('load', function (e) {
-  console.log('page fully loaded');
-});
-
-// //Evento prima che l'utente esca dal sito (deve aver interagito prima con la pagina altrimenti non triggera l'evento)
-// window.addEventListener('beforeunload', function (e) {
-//   e.preventDefault();
-//   console.log(e);
-//   //Se vogliamo displayare una leaving confrimation dobbiamo settare una stringa vuota a returnValue
-//   //Don't need in modern browsers
-//   // e.returnValue = ';
-// });
-
-//Regular way to include js file (always at the end of the body)
-//script src ecc.. parsing html then fetching the script then fnishing parsing html
-
-//Async in the head ( no need to put it in the end of the body )
-//script loaded at same time as html is parsed but the html get interrupted to execute the script then it continue to parse
-
-//Dom content loaded does not wait for async scripts!!
-//Scripts not guarantee to execute in order
-
-//Defer in the head ( no need to put it in the end of the body )
-//script loaded at same time as html but html is never interrupted
-
-//Dom content loaded fires after defer script is executed!!
-//Scripts are executed in order
-
-//If i ever need to include a third part library , the library scrips should be loaded before my script => defer ( ordered )
-
-//For any library which doesen't need order we can use async

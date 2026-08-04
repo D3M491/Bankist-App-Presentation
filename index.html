@@ -15,9 +15,44 @@
     <script defer src="script.js"></script>
   </head>
   <body>
+    <!--Svg menu-->
+    <svg style="display: none">
+      <symbol
+        id="ui_menu_grid--outline"
+        viewBox="0 0 48 48"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+      <path
+        d="M14 8H8v6h6zM8 6C6.8954 6 6 6.8954 6 8v6c0 1.1046 0.8954 2 2 2h6c1.1046 0 2-0.8954 2-2V8c0-1.1046-0.8954-2-2-2z"
+      />
+      <path
+        d="M14 21H8v6h6zM8 19c-1.1046 0-2 0.8954-2 2v6c0 1.1046 0.8954 2 2 2h6c1.1046 0 2-0.8954 2-2v-6c0-1.1046-0.8954-2-2-2z"
+      />
+      <path
+        d="M14 34H8v6h6zM8 32c-1.1046 0-2 0.8954-2 2v6c0 1.1046 0.8954 2 2 2h6c1.1046 0 2-0.8954 2-2v-6c0-1.1046-0.8954-2-2-2z"
+      />
+      <path
+        d="M27 8h-6v6h6zM21 6c-1.1046 0-2 0.8954-2 2v6c0 1.1046 0.8954 2 2 2h6c1.1046 0 2-0.8954 2-2V8c0-1.1046-0.8954-2-2-2z"
+      />
+      <path
+        d="M27 21h-6v6h6zM21 19c-1.1046 0-2 0.8954-2 2v6c0 1.1046 0.8954 2 2 2h6c1.1046 0 2-0.8954 2-2v-6c0-1.1046-0.8954-2-2-2z"
+      />
+      <path
+        d="M27 34h-6v6h6zM21 32c-1.1046 0-2 0.8954-2 2v6c0 1.1046 0.8954 2 2 2h6c1.1046 0 2-0.8954 2-2v-6c0-1.1046-0.8954-2-2-2z"
+      />
+      <path
+        d="M40 8h-6v6h6zM34 6c-1.1046 0-2 0.8954-2 2v6c0 1.1046 0.8954 2 2 2h6c1.1046 0 2-0.8954 2-2V8c0-1.1046-0.8954-2-2-2z"
+      />
+      <path
+        d="M40 21h-6v6h6zM34 19c-1.1046 0-2 0.8954-2 2v6c0 1.1046 0.8954 2 2 2h6c1.1046 0 2-0.8954 2-2v-6c0-1.1046-0.8954-2-2-2z"
+      />
+      <path
+        d="M40 34h-6v6h6zM34 32c-1.1046 0-2 0.8954-2 2v6c0 1.1046 0.8954 2 2 2h6c1.1046 0 2-0.8954 2-2v-6c0-1.1046-0.8954-2-2-2z"
+      />
+      </symbol>
+    </svg>
     <header class="header">
       <nav class="nav">
-        <!-- For the data attribute its just data- other names -->
         <img
           src="img/logo.png"
           alt="Bankist logo"
@@ -26,6 +61,10 @@
           designer="Jonas"
           data-version-number="3.0"
         />
+        <svg class="nav__menu-icon">
+          <use href="#ui_menu_grid--outline"></use>
+        </svg>
+
         <ul class="nav__links">
           <li class="nav__item">
             <a class="nav__link" href="#section--1  ">Features</a>
