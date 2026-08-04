@@ -1,6 +1,5 @@
 'use strict';
 
-///////////////////////////////////////
 // Pannello modale
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
@@ -320,12 +319,14 @@ const slider = function () {
 slider();
 
 //Menu logic
+
 menuIcon.addEventListener('click', function (e) {
   e.preventDefault();
 
+  console.log(menuIcon);
   menuIcon.classList.toggle('nav__menu-open');
   //Show modal
-  document.querySelector('.nav__links').classList.toggle('nav__link-mobile');
+  document.querySelector('.nav__links').classList.toggle('nav__links-mobile');
   //Show overlay
   overlay.classList.toggle('hidden');
 });

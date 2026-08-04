@@ -166,10 +166,20 @@ img {
 
 .nav__links-mobile {
   flex-direction: column;
-  background-color: white;
+  position: absolute;
+  text-align: right;
+  color: white;
+  right: 2rem;
+  top: 5rem;
   display: block;
   opacity: 1;
   visibility: visible;
+}
+
+.nav__bg-element {
+  background-color: #39b385;
+  width: 4rem;
+  height: 4rem;
 }
 
 .nav__link:link,
@@ -205,7 +215,7 @@ img {
   opacity: 0;
   visibility: hidden;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease-in;
   z-index: 1000;
 }
 
@@ -222,6 +232,7 @@ img {
 
 .nav__menu-icon:hover {
   fill: #39b385;
+  transform: scale(1.2);
 }
 
 /* HEADER */
