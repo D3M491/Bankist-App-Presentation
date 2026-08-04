@@ -16,8 +16,30 @@ const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
 const menuIcon = document.querySelector('.nav__menu-icon');
-//Titolo h1
 const h1 = document.querySelector('h1');
+ù;
+//Mobile menu logic
+const toggleMobileMenu = function () {
+  //Keeps it green while menu is open
+  menuIcon.classList.toggle('nav__menu-open');
+
+  //Show modal
+  document.querySelector('.nav__links').classList.toggle('show');
+
+  //Show overlay
+  overlay.classList.toggle('hidden');
+};
+
+menuIcon.addEventListener('click', function (e) {
+  e.preventDefault();
+  toggleMobileMenu();
+});
+
+//todo fix closing menu on modal x press
+overlay.addEventListener('click', () => {
+  toggleMobileMenu();
+  closeModal();
+});
 
 //Pannello modale apertura e chiusura
 const openModal = function (e) {
@@ -317,16 +339,3 @@ const slider = function () {
 };
 
 slider();
-
-//Menu logic
-
-menuIcon.addEventListener('click', function (e) {
-  e.preventDefault();
-
-  console.log(menuIcon);
-  menuIcon.classList.toggle('nav__menu-open');
-  //Show modal
-  document.querySelector('.nav__links').classList.toggle('nav__links-mobile');
-  //Show overlay
-  overlay.classList.toggle('hidden');
-});
