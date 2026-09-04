@@ -192,7 +192,7 @@ allSection.forEach(section => {
 const imgTargets = document.querySelectorAll('img[data-src]');
 const loadImg = function (entries, observer) {
   const [entry] = entries;
-  console.log(entry);
+
   //Sostituire src lazy con data-src
   entry.target.src = entry.target.dataset.src;
   //Attendi che abbia caricato prima di rimuovere la classe lazy
