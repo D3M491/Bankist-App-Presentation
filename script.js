@@ -38,12 +38,15 @@ menuIcon.addEventListener('click', function (e) {
   toggleMobileMenu();
 });
 
-document.querySelectorAll('.nav__link').forEach(link =>
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    toggleMobileMenu();
-  }),
-);
+const mm = window.matchMedia('(max-width : 900px)');
+if (mm.matches) {
+  document.querySelectorAll('.nav__link').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      toggleMobileMenu();
+    });
+  });
+}
 
 overlay.addEventListener('click', () => {
   closeModal();
@@ -98,10 +101,27 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   if (e.target.classList.contains('nav__link')) {
     //Ottieni il link
     const id = e.target.getAttribute('href');
+    if (!id) return;
     //Aggiungi uno smooth scroll a quell'id
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
 });
+
+//Animazione fade del menu. Non serve passare l'opacita negli argomenti
+const handleHover = function (e) {
+  //I link non hanno elementi figli, quindi non serve usare closest
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    //Saliamo per cercare l'elemento con quella classe. Non posso usare closest per cercare .nav__links
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    // const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
+    });
+    // logo.style.opacity = this;
+  }
+};
 
 //Componente a schede
 //Controlla qual e il target cliccato cercando il .operations__tab piu vicino
@@ -121,22 +141,6 @@ tabsContainer.addEventListener('click', function (e) {
     .querySelector(`.operations__content--${clicked.dataset.tab}`) //Con questo ottengo il valore numerico
     .classList.add('operations__content--active');
 });
-
-//Animazione fade del menu. Non serve passare l'opacita negli argomenti
-const handleHover = function (e) {
-  //I link non hanno elementi figli, quindi non serve usare closest
-  if (e.target.classList.contains('nav__link')) {
-    const link = e.target;
-    //Saliamo per cercare l'elemento con quella classe. Non posso usare closest per cercare .nav__links
-    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
-    // const logo = link.closest('.nav').querySelector('img');
-
-    siblings.forEach(el => {
-      if (el !== link) el.style.opacity = this;
-    });
-    // logo.style.opacity = this;
-  }
-};
 
 //Passa un argomento nell'handler
 //Bind crea una funzione copia separata passando un argomento . L'evento e è implicito , viene passato automaticamente dal browser come primo parametro
